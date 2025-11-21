@@ -40,7 +40,12 @@ public class TeleportManager {
             return TeleportResult.INVALID_WORLD;
         }
         Location location = new Location(world, x, y, z, yaw, pitch);
-        player.teleportAsync(location);
+
+        player.teleportAsync(location).thenAccept(result -> {
+            if (result)
+                player.setFallDistance(0f);
+        });
+
         return TeleportResult.SUCCESS;
     }
 
