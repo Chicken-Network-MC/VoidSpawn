@@ -1,58 +1,14 @@
-![VoidSpawn](https://www.spigotmc.org/attachments/voidspawn-png.135493/)
+## VoidSpawn - Folia Support
 
-VoidSpawn [![CircleCI](https://circleci.com/gh/endercrest/VoidSpawn.svg?style=svg)](https://circleci.com/gh/endercrest/VoidSpawn)
-=========
-VoidSpawn is an easy-to-use plugin built for Bukkit & Spigot where the player is teleported to a spawn upon entering the void.  
+This is in no means a full Folia port, but rather a quick patch to get VoidSpawn working on Folia servers.\
+I got no intentions of maintaining this fork unless there's a bug that needs to be fixed or adding removed modes back,
+so use at your own risk.\
+Some features may not work as intended or at all.\
+Some of the modes have been removed due to incompatibility with Folia and me being too lazy to fix/edit those.
 
-* Teleports players upon entering the void.
-* Supports multiple types of teleportation types.
-* Multi-World support
-* Saves players from death.
+This fork also has an optimization that _should_ improve the plugin's performance a lot.\
+Instead of checking for void players on move event, it uses a repeating task that checks the player's Y level every
+second.\
+Task interval is hardcoded because, well, this is intended to be for our private use.
 
-Requirements
-------
-* Java 21+
-* Spigot MC 1.21.1+ (1.21.1-R0.1-SNAPSHOT or Higher)
-* ~~uSkyBlock 2.7.5 (Optional) - Adds additional features.~~ (See https://github.com/endercrest/VoidSpawn/issues/107)
-* BentoBox 2.5.4 (Optional) - Adds additional features.
-* SuperiorSkyblock2 2024.3 (Optional) - Adds additional features.
-
-VoidSpawn 1.17.0 and above only supports MC/Spigot 1.13 and above. For MC/Spigot versions below,
-there are unsupported versions under the releases tab.
-
-Compiling
-------
-Requires **Maven 3** & **Git**
-
-Begin by cloning the repository.
-```
-git clone https://github.com/endercrest/VoidSpawn.git
-```
-Navigate to created directory
-```
-cd VoidSpawn
-```
-Next, Compile the project.
-```
-mvn install
-```
-
-Contributing
-------
-Feel free to make contributions to the repository. When making
-pull-requests, I ask that you aim at the develop branch where all 
-pre-release development goes. 
-
-Installation/Setup
-------
-VoidSpawn requires a working version of [Spigot](http://www.spigotmc.org/)
-or [Bukkit](https://bukkit.org/) to be installed and setup. Once a Spigot
-or Bukkit server is setup, drop VoidSpawn.jar into the plugins folder of
-the server then restart the server. For details on how to use the plugin
-in-game, head over to the VoidSpawn resource page on
-[SpigotMC](https://www.spigotmc.org/resources/voidspawn.19350/).
-
-Reporting Issues
-------
-Run into an issue? Please use the issue tracker provided by GitHub.
-Issues will hopefully be resolved as soon a possible.
+[For original repository, click here.](https://github.com/endercrest/VoidSpawn)
