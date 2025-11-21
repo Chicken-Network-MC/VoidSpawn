@@ -1,34 +1,17 @@
 package com.endercrest.voidspawn;
 
-import java.util.logging.Level;
-
 import com.endercrest.voidspawn.commands.VoidSpawnTabCompleter;
 import com.endercrest.voidspawn.utils.MessageUtil;
-import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.command.PluginCommand;
-import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import java.util.logging.Level;
 
 public class VoidSpawn extends JavaPlugin {
     public static String prefix = "[&6VS&f] ";
 
     public void onEnable(){
-        try {
-            // This is the class we check for as it was added in 1.13 and should remain in place for the long term.
-            Class.forName("org.bukkit.Tag");
-        } catch (ClassNotFoundException e) {
-            log("&cERROR: Unsupported version of Spigot/Paper detected!");
-            log("&cERROR: Disabling plugin! Please update to latest version");
-            log("&cERROR: or use an unsupported version of VoidSpawn");
-            Bukkit.getPluginManager().disablePlugin(this);
-            return;
-        }
-
-        if (!this.getDescription().getVersion().contains("SNAPSHOT")) {
-            Metrics metrics = new Metrics(this, 3514);
-        }
-
         loadConfiguration();
         ConfigManager.getInstance().setUp(this);
         TeleportManager.getInstance().setUp(this);
@@ -42,7 +25,8 @@ public class VoidSpawn extends JavaPlugin {
         command.setExecutor(commandHandler);
         command.setTabCompleter(new VoidSpawnTabCompleter(commandHandler));
 
-        Bukkit.getScheduler().runTaskTimer(this, new TouchTracker(), 5, 5);
+        //Bukkit.getScheduler().runTaskTimer(this, new TouchTracker(), 5, 5);
+        // Touch mode is disabled on Folia because who needs it
 
         log("&ev" + getDescription().getVersion() + " by EnderCrest enabled");
     }

@@ -1,9 +1,11 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
+
     <groupId>com.endercrest.voidspawn</groupId>
     <artifactId>VoidSpawn</artifactId>
     <version>1.21.0${snapshot}</version>
     <name>VoidSpawn</name>
+
     <developers>
         <developer>
             <id>endercrest</id>
@@ -11,12 +13,14 @@
             <email>tcvs@endercrest.com</email>
         </developer>
     </developers>
+
     <url>endercrest.com</url>
+
     <dependencies>
         <dependency>
-            <groupId>org.spigotmc</groupId>
-            <artifactId>spigot-api</artifactId>
-            <version>1.21.1-R0.1-SNAPSHOT</version>
+            <groupId>io.canvasmc.canvas</groupId>
+            <artifactId>canvas-api</artifactId>
+            <version>1.21.8-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -25,25 +29,6 @@
             <version>2024.3</version>
             <scope>provided</scope>
         </dependency>
-<!--        uSkyblock Maven is offline: https://github.com/uskyblock/uSkyBlock/issues/57 -->
-<!--        <dependency>-->
-<!--            <groupId>com.github.rlf</groupId>-->
-<!--            <artifactId>uSkyBlock-API</artifactId>-->
-<!--            <version>3.0.0</version>-->
-<!--        </dependency>-->
-        <dependency>
-            <groupId>org.bstats</groupId>
-            <artifactId>bstats-bukkit</artifactId>
-            <version>1.8</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>world.bentobox</groupId>
-            <artifactId>bentobox</artifactId>
-            <version>2.5.4</version>
-            <scope>provided</scope>
-        </dependency>
-
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
@@ -56,10 +41,15 @@
             <version>20.1.0</version>
         </dependency>
     </dependencies>
+
     <repositories>
         <repository>
-            <id>spigot-repo</id>
-            <url>https://hub.spigotmc.org/nexus/content/groups/public/</url>
+            <id>paper-repo</id>
+            <url>https://repo.papermc.io/repository/maven-public/</url>
+        </repository>
+        <repository>
+            <id>canvas-repo</id>
+            <url>https://maven.canvasmc.io/snapshots</url>
         </repository>
         <repository>
             <id>CodeMC</id>
@@ -69,12 +59,8 @@
             <id>bg-repo</id>
             <url>https://repo.bg-software.com/repository/api/</url>
         </repository>
-<!--        uSkyblock Maven is offline: https://github.com/uskyblock/uSkyBlock/issues/57 -->
-<!--        <repository>-->
-<!--            <id>ultimateskyblock</id>-->
-<!--            <url>https://www.uskyblock.ovh/maven/uskyblock/</url>-->
-<!--        </repository>-->
     </repositories>
+
     <profiles>
         <profile>
             <id>Development</id>
@@ -119,19 +105,6 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
                 <version>3.6.0</version>
-                <configuration>
-                    <relocations>
-                        <relocation>
-                            <pattern>org.bstats</pattern>
-                            <shadedPattern>com.endercrest.voidspawn</shadedPattern>
-                        </relocation>
-                    </relocations>
-                    <artifactSet>
-                        <includes>
-                            <include>org.bstats:bstats-bukkit</include>
-                        </includes>
-                    </artifactSet>
-                </configuration>
                 <executions>
                     <execution>
                         <phase>package</phase>

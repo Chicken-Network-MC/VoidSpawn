@@ -1,14 +1,10 @@
 package com.endercrest.voidspawn;
 
-import org.bukkit.*;
+import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.entity.Player;
-import org.bukkit.persistence.PersistentDataContainer;
-import org.bukkit.persistence.PersistentDataType;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 
@@ -16,7 +12,6 @@ public class TeleportManager {
     private static TeleportManager instance = new TeleportManager();
     private VoidSpawn plugin;
     private List<UUID> playerToggle;
-    private TouchUtil touchUtil;
 
     public static TeleportManager getInstance() {
         return instance;
@@ -25,7 +20,6 @@ public class TeleportManager {
     public void setUp(VoidSpawn plugin) {
         this.plugin = plugin;
         playerToggle = new ArrayList<>();
-        touchUtil = new TouchUtil(plugin);
     }
 
     /**
@@ -46,58 +40,7 @@ public class TeleportManager {
             return TeleportResult.INVALID_WORLD;
         }
         Location location = new Location(world, x, y, z, yaw, pitch);
-        player.teleport(location);
-        return TeleportResult.SUCCESS;
-    }
-
-    /**
-     * Update the players location for touch spawn mode.
-     *
-     * @param player The player.
-     * @param loc  The location of the player.
-     */
-    public void setPlayerLocation(Player player, Location loc) {
-        touchUtil.setLocation(player, loc);
-    }
-
-    @Nullable
-    public Location getPlayerLocation(Player player) {
-        return touchUtil.getLocation(player);
-    }
-
-    /**
-     * Teleports the player to their last touched location.
-     *
-     * @param p The player that will be teleported.
-     * @return Whether the teleport was successful.
-     */
-    public TeleportResult teleportTouch(Player p) {
-        Location loc = touchUtil.getLocation(p);
-        if (loc == null) {
-            loc = p.getLocation();
-        }
-        Location below = new Location(loc.getWorld(), loc.getX(), loc.getY() - 1, loc.getZ());
-        if (below.getBlock().getType().equals(Material.AIR)) {
-            for (int i = 1; i < 10; i++) {
-                Location newLoc = new Location(loc.getWorld(), loc.getX() + i, loc.getWorld().getHighestBlockYAt(loc.getBlockX() + i, loc.getBlockZ()), loc.getZ());
-                Location newLocBelow = new Location(loc.getWorld(), loc.getX() + i, loc.getWorld().getHighestBlockYAt(loc.getBlockX() + i, loc.getBlockZ()) - 1, loc.getZ());
-                if (!newLocBelow.getBlock().getType().equals(Material.AIR)) {
-                    p.teleport(newLoc);
-                    return TeleportResult.SUCCESS;
-                }
-            }
-            for (int i = 1; i < 10; i++) {
-                Location newLoc = new Location(loc.getWorld(), loc.getX(), loc.getWorld().getHighestBlockYAt(loc.getBlockX(), loc.getBlockZ() + i), loc.getZ() + i);
-                Location newLocBelow = new Location(loc.getWorld(), loc.getX(), loc.getWorld().getHighestBlockYAt(loc.getBlockX(), loc.getBlockZ()) - 1, loc.getZ() + i);
-                if (!newLocBelow.getBlock().getType().equals(Material.AIR)) {
-                    p.teleport(newLoc);
-                    return TeleportResult.SUCCESS;
-                }
-            }
-            p.teleport(loc.getWorld().getSpawnLocation());
-            return TeleportResult.SUCCESS;
-        }
-        p.teleport(loc);
+        player.teleportAsync(location);
         return TeleportResult.SUCCESS;
     }
 
@@ -152,51 +95,6 @@ public class TeleportManager {
      */
     public void removePlayer(UUID uuid) {
         playerToggle.remove(uuid);
-    }
-
-    /** Utility useful for reading and writing touch location onto the player entity */
-    private static class TouchUtil {
-        private NamespacedKey worldUidKey;
-        private NamespacedKey xKey;
-        private NamespacedKey yKey;
-        private NamespacedKey zKey;
-
-        public TouchUtil(VoidSpawn plugin) {
-            this.worldUidKey = new NamespacedKey(plugin, "touchWorldUid");
-            this.xKey = new NamespacedKey(plugin, "touchX");
-            this.yKey = new NamespacedKey(plugin, "touchY");
-            this.zKey = new NamespacedKey(plugin, "touchZ");
-        }
-
-        public void setLocation(@NotNull Player player, @NotNull Location location) {
-            PersistentDataContainer container = player.getPersistentDataContainer();
-
-            container.set(worldUidKey, PersistentDataType.STRING, location.getWorld().getUID().toString());
-            container.set(xKey, PersistentDataType.DOUBLE, location.getX());
-            container.set(yKey, PersistentDataType.DOUBLE, location.getY());
-            container.set(zKey, PersistentDataType.DOUBLE, location.getZ());
-        }
-
-        @Nullable
-        public Location getLocation(Player player) {
-            PersistentDataContainer container = player.getPersistentDataContainer();
-
-            String worldUid = container.get(worldUidKey, PersistentDataType.STRING);
-            Double locX = container.get(xKey, PersistentDataType.DOUBLE);
-            Double locY = container.get(yKey, PersistentDataType.DOUBLE);
-            Double locZ = container.get(zKey, PersistentDataType.DOUBLE);
-
-            if (worldUid == null || locX == null || locY == null || locZ == null) {
-                return null;
-            }
-
-            World world = Bukkit.getWorld(UUID.fromString(worldUid));
-            if (world == null) {
-                return null;
-            }
-
-            return new Location(world, locX, locY, locZ);
-        }
     }
 
 }

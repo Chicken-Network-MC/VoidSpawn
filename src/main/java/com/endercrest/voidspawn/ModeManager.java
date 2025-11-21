@@ -1,8 +1,8 @@
 package com.endercrest.voidspawn;
 
 import com.endercrest.voidspawn.modes.Mode;
-import com.endercrest.voidspawn.modes.*;
-import com.endercrest.voidspawn.modes.island.*;
+import com.endercrest.voidspawn.modes.None;
+import com.endercrest.voidspawn.modes.SpawnMode;
 
 import javax.naming.NameAlreadyBoundException;
 import java.util.HashMap;
@@ -26,29 +26,10 @@ public class ModeManager {
     public void setUp(VoidSpawn plugin) {
         try {
             addMode("spawn", new SpawnMode());
-            addMode("touch", new TouchMode());
+            //addMode("touch", new TouchMode());
             addMode("none", new None());
-            addMode("command", new CommandMode(plugin));
-            addMode("looper", new LooperMode());
-
-            // Load the correct island mode.
-            if (BentoBoxIslandMode.isModeEnabled()) {
-                plugin.log("&eBentoBox found, initializing support.");
-                addMode("island", new BentoBoxIslandMode());
-                plugin.log("&eBentoBox support initialized.");
-            } else if (USkyBlockIslandMode.isModeEnabled()) {
-                plugin.log("&eUSkyBlock found, initializing support.");
-                addMode("island", new USkyBlockIslandMode());
-//                plugin.log("&eUSkyBlock support initialized.");
-                plugin.log("&cUSkyBlock failed to initialize. See https://github.com/endercrest/VoidSpawn/issues/107.");
-            } else if (SuperiorSkyblockIslandMode.isModeEnabled()) {
-                plugin.log("&eSuperiorSkyblock2 found, initializing support.");
-                addMode("island", new SuperiorSkyblockIslandMode());
-                plugin.log("&eSuperiorSkyblock2 support initialized.");
-            } else {
-                plugin.log("&eNo SkyBlock plugins found, disabling island mode support.");
-                addMode("island", new DisabledIslandMode());
-            }
+            //addMode("command", new CommandMode(plugin));
+            //addMode("looper", new LooperMode());
         } catch (NameAlreadyBoundException e) {
             e.printStackTrace();
         }
